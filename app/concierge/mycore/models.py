@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models import DO_NOTHING
+
 
 class Tenant(models.Model):
     """
@@ -50,5 +52,59 @@ class Tenant(models.Model):
             models.Index(fields=['first_name', 'last_name']),
         ]
 
-#TODO model Room
-#TODO model Journal
+
+class Room(models.Model):
+    """
+    model Room
+    """
+
+    number = models.IntegerField(
+        'Room number',
+
+    )
+    max_guests = models.IntegerField(
+        'Maximum guests',
+
+    )
+    owner = models.ForeignKey(
+        Tenant,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    is_free = models.BooleanField(
+        'is free',
+        default=True
+    )
+
+
+class Journal(models.Model):
+    """
+    model Journal
+    """
+    room_id = models.ForeignKey(
+        Room,
+        on_delete=models.CASCADE
+    )
+    guests_cnt = models.IntegerField(
+        'Count guests',
+
+    )
+    key_in_date = models.DateTimeField(
+        'Date and time check-in',
+        db_index=True
+    )
+    key_out_date = models.DateTimeField(
+        'Date and time check-out',
+        db_index=True,
+        null=True,
+        blank=True
+    )
+    tenant_id = models.ForeignKey(
+        Tenant,
+        on_delete=models.CASCADE
+    )
+    notes = models.TextField(
+        blank=True,
+        null=True,
+    )
