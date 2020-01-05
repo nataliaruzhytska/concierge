@@ -1,7 +1,5 @@
+from django.core.exceptions import ValidationError
 from django.db import models
-
-# Create your models here.
-from django.db.models import DO_NOTHING
 
 
 class Tenant(models.Model):
@@ -108,3 +106,31 @@ class Journal(models.Model):
         blank=True,
         null=True,
     )
+
+    @property
+    def key_transfer(self):
+        return f'{self.room_id}, {self.key_in_date}, {self.key_out_date}, {self.guests_cnt}, {self.tenant_id}'
+
+    def __str__(self):
+        return self.key_transfer
+
+    def save(self, *args, **kwargs):
+        room = self.room_id
+        if self.key_out_date:
+            room.is_free = True
+            room.owner = None
+            room.save()
+            super().save(*args, **kwargs)
+        else:
+            if self.guests_cnt > room.max_guests:
+                raise ValidationError(f"Maximum available {room.max_guests} guests")
+            else:
+                if room.is_free == True:
+                    room.is_free = False
+                    room.owner = self.tenant_id
+                    room.save()
+                    super().save(*args, **kwargs)
+                else:
+                    raise ValidationError(f"This room isn't free. Please, choose another")
+
+
