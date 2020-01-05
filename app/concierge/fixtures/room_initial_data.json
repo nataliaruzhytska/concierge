@@ -1,0 +1,52 @@
+[
+  {
+    "model": "mycore.room",
+    "pk": 11,
+    "fields": {
+      "number": "111",
+      "max_guests": 5,
+      "owner": null,
+      "is_free": true
+    }
+  },
+  {
+    "model": "mycore.room",
+    "pk": 12,
+    "fields": {
+      "number": "222",
+      "max_guests": 2,
+      "owner": null,
+      "is_free": true
+    }
+  },
+  {
+    "model": "mycore.room",
+    "pk": 13,
+    "fields": {
+      "number": "333",
+      "max_guests": 6,
+      "owner": null,
+      "is_free": true
+    }
+  },
+  {
+    "model": "mycore.room",
+    "pk": 14,
+    "fields": {
+      "number": "444",
+      "max_guests": 4,
+      "owner": null,
+      "is_free": true
+    }
+  },
+  {
+    "model": "mycore.room",
+    "pk": 15,
+    "fields": {
+      "number": "555",
+      "max_guests": 7,
+      "owner": null,
+      "is_free": true
+    }
+  }
+]
