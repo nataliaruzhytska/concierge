@@ -96,7 +96,7 @@ class Journal(models.Model):
         'Date and time check-out',
         db_index=True,
         null=True,
-        blank=True
+        blank=True,
     )
     tenant_id = models.ForeignKey(
         Tenant,
@@ -117,10 +117,13 @@ class Journal(models.Model):
     def save(self, *args, **kwargs):
         room = self.room_id
         if self.key_out_date:
-            room.is_free = True
-            room.owner = None
-            room.save()
-            super().save(*args, **kwargs)
+            if room.is_free == False:
+                room.is_free = True
+                room.owner = None
+                room.save()
+                super().save(*args, **kwargs)
+            else:
+                raise ValidationError(f"You cannot modify check-out date")
         else:
             if self.guests_cnt > room.max_guests:
                 raise ValidationError(f"Maximum available {room.max_guests} guests")
@@ -132,5 +135,3 @@ class Journal(models.Model):
                     super().save(*args, **kwargs)
                 else:
                     raise ValidationError(f"This room isn't free. Please, choose another")
-
-
