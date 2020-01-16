@@ -56,14 +56,8 @@ class Room(models.Model):
     model Room
     """
 
-    number = models.IntegerField(
-        'Room number',
-
-    )
-    max_guests = models.IntegerField(
-        'Maximum guests',
-
-    )
+    number = models.IntegerField('Room number')
+    max_guests = models.IntegerField('Maximum guests')
     owner = models.ForeignKey(
         Tenant,
         on_delete=models.SET_NULL,
