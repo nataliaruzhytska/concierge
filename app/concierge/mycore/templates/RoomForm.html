@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block content %}
+    <p><h3>Add New Room</h3>
+        <form method="post">
+            {% csrf_token %}
+            <label>Enter Room number</label>
+            <input type="text" name="number">
+            <label>Enter Maximum Guests Count</label>
+            <input type="text" name="max_guests">
+            <input type="submit"/>
+            <input type="reset"/>
+        </form>
+    </p>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block content %}
+    <h1>Rooms</h1>
+    <ul>
+    {% for room in object_list %}
+        <li> <a href="room_detail/{{ room.id }}/">
+            {{ room.number}} , {{ room.max_guests }}, {{ room.is_free }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+    <a href="/room">Add New</a>
+{% endblock %}

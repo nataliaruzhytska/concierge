@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% block content %}
+    <p><h3>Add New Tenant</h3>
+            <form  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p><label>Enter Tenant First Name</label>
+                <input type="text" name="first_name"></p>
+                <p><label>Enter Tenant Last Name</label>
+                <input type="text" name="last_name"></p>
+                <p><label>Enter Tenant Date of Birth</label>
+                <input type="date" name="date_of_birth"></p>
+                <p><label>Enter Tenant Phone Number</label>
+                <input type="text" name="phone"></p>
+                <p><label>Add Photo</label>
+                <input type="file" name="photo"></p>
+                <input type="submit"/>
+                <input type="reset"/>
+            </form>
+    </p>
+{% endblock %}
