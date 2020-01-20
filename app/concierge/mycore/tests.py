@@ -1,14 +1,12 @@
 import requests
-from django.conf.urls import url
 from django.test import TestCase
 from django.urls import reverse
 from http import HTTPStatus
 
 from . import models
 from .forms import TenantForm, RoomForm, JournalForm
-from .settings import FIXTURES
+from .settings import FIXTURES, API_URL
 
-API_URL = 'http://127.0.0.1:8000/api/<object>/<object_id>'
 
 class ViewTests(TestCase):
 
@@ -62,18 +60,15 @@ class SerializerTests(TestCase):
     fixtures = FIXTURES
 
     def test_api_serializer_tenant(self):
-        tenant_api = 'http://127.0.0.1:8000/api/tenant/all'
-        response = requests.get(tenant_api)
+        response = requests.get(f'{API_URL}tenant/all')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_api_serializer_room(self):
-        room_api = 'http://127.0.0.1:8000/api/room/all'
-        response = requests.get(room_api)
+        response = requests.get(f'{API_URL}room/all')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_api_serializer_journal(self):
-        journal_api = 'http://127.0.0.1:8000/api/journal/all'
-        response = requests.get(journal_api)
+        response = requests.get(f'{API_URL}journal/all')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
 

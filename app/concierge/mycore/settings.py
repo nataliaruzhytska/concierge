@@ -171,3 +171,5 @@ LOGGING = {
 # dictConfig(LOGGING)
 
 FIXTURES = ['room_initial_data.json', 'tenant_initial_data.json', 'journal_initial_data.json']
+
+API_URL = 'http://127.0.0.1:8000/api/'
