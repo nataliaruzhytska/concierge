@@ -16,11 +16,14 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.contrib.auth.decorators import permission_required, login_required
+from django.urls import path, include
+from django.views.decorators.cache import cache_page
 
+from .settings import CACHE_TTL
 from .views import health_check, index, JournalView, created, RoomView, TenantView, TenantDetailView, RoomDetailView, \
     JournalDetailView, TenantListView, RoomListView, JournalListView, api_serializer_tenant, api_serializer_room, \
-    api_serializer_journal
+    api_serializer_journal, check_out
 
 static_patterns = static(settings.MEDIA_URL,
                          document_root=settings.MEDIA_ROOT) + \
@@ -29,21 +32,24 @@ static_patterns = static(settings.MEDIA_URL,
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('<slug:slug>/accounts/', include('django.contrib.auth.urls')),
     path('healthcheck/', health_check, name='health_check'),
     path('', index, name='index'),
-    path('journal/', JournalView.as_view(), name='add_journal'),
-    path('room/', RoomView.as_view(), name='add_room'),
-    path('tenant/', TenantView.as_view(), name='add_tenant'),
+    path('journal/', permission_required('mycore.add_journal', 'mycore.change_journal')(JournalView.as_view()), name='add_journal'),
+    path('room/', permission_required('mycore.add_room')(RoomView.as_view()), name='add_room'),
+    path('tenant/', permission_required('mycore.add_tenant')(TenantView.as_view()), name='add_tenant'),
     path('journal/created/', created, name='created'),
     path('room/created/', created, name='created'),
     path('tenant/created/', created, name='created'),
-    path('tenants/', TenantListView.as_view(), name='tenant_list'),
-    path('rooms/', RoomListView.as_view(), name='room_list'),
+    path('tenants/', login_required(TenantListView.as_view()), name='tenant_list'),
+    path('rooms/', login_required(RoomListView.as_view()), name='room_list'),
     path('journals/', JournalListView.as_view(), name='journal_list'),
-    path('tenants/tenant_detail/<pk>/', TenantDetailView.as_view(), name='tenant_detail'),
+    path('tenants/tenant_detail/<pk>/', cache_page(CACHE_TTL)(TenantDetailView.as_view()), name='tenant_detail'),
     path('journals/journal_detail/<pk>/', JournalDetailView.as_view(), name='journal_detail'),
-    path('rooms/room_detail/<pk>/', RoomDetailView.as_view(), name='room_detail'),
+    path('journals/journal_detail/<journal_id>/check_out_form', check_out, name='check_out'),
+    path('rooms/room_detail/<pk>/', cache_page(CACHE_TTL)(RoomDetailView.as_view()), name='room_detail'),
     path('api/tenant/<object_id>/', api_serializer_tenant, name='tenant_api'),
     path('api/room/<object_id>/', api_serializer_room, name='room_api'),
-    path('api/journal/<object_id>/', api_serializer_journal, name='journal_api')
+    path('api/journal/<object_id>/', cache_page(CACHE_TTL)(api_serializer_journal), name='journal_api')
 ] + static_patterns

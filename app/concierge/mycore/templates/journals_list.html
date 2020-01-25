@@ -4,10 +4,19 @@
     <h1>Journals</h1>
     <p>
     {% for journal in object_list %}
-        <li> <a href="journal_detail/{{ journal.id }}/">
-            {{ journal.room_id.number}} , {{ journal.tenant_id.fullname }},
-            {{ journal.key_in_date }}, {{ journal.key_out_date }}</a>
-        </li>
+        {% if user.is_authenticated %}
+            </ul>
+                <li> <a href="journal_detail/{{ journal.id }}/">
+                    {{ journal.room_id.number}} , {{ journal.tenant_id.fullname }},
+                    {{ journal.key_in_date }}, {{ journal.key_out_date }}</a>
+                </li>
+            </ul>
+        {% else%}
+            <ul>
+            <li>{{ journal.room_id.number}} , {{ journal.tenant_id.fullname }},
+            {{ journal.key_in_date }}, {{ journal.key_out_date }}</li>
+            </ul>
+        {% endif%}
     {% endfor %}
     </p>
     <a href="/journal">Add New</a>
