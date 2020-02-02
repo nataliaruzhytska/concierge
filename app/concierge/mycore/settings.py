@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mycore',
+    'mycore', 'concierge'
 ]
 
 MIDDLEWARE = [
@@ -192,7 +192,7 @@ LOGGING = {
 
 FIXTURES = ['room_initial_data.json', 'tenant_initial_data.json', 'journal_initial_data.json']
 
-API_URL = 'http://127.0.0.1:8000/api/'
+CHECK_OUT_URL = 'http://127.0.0.1:8000/journals/journal_detail/'
 
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
