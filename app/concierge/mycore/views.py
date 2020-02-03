@@ -1,17 +1,22 @@
+from django.contrib.auth.decorators import permission_required, login_required
 from django.core import serializers
 from django.core.serializers import SerializerDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.utils import timezone
+from django.views.decorators.cache import cache_page
 from django.views.generic import FormView, DetailView, ListView
 from .forms import JournalForm, RoomForm, TenantForm
 from .models import Tenant, Room, Journal
+from .settings import CACHE_TTL
 
 
 def health_check(request):
     return HttpResponse('OK')
 
 
+@cache_page(CACHE_TTL)
 def index(request):
     return HttpResponse(render_to_string('index.html', {'title': 'Concierge'}))
 
@@ -87,7 +92,6 @@ class JournalView(FormView):
 
 
 class TenantListView(ListView):
-
     model = Tenant
     queryset = Tenant.objects.all()
     template_name = 'tenants_list.html'
@@ -98,7 +102,6 @@ class TenantListView(ListView):
 
 
 class RoomListView(ListView):
-
     model = Room
     queryset = Room.objects.all()
     template_name = 'rooms_list.html'
@@ -109,7 +112,6 @@ class RoomListView(ListView):
 
 
 class JournalListView(ListView):
-
     model = Journal
     queryset = Journal.objects.all()
     template_name = 'journals_list.html'
@@ -120,7 +122,6 @@ class JournalListView(ListView):
 
 
 class TenantDetailView(DetailView):
-
     model = Tenant()
     queryset = Tenant.objects.all()
     template_name = 'tenant_detail.html'
@@ -130,7 +131,6 @@ class TenantDetailView(DetailView):
 
 
 class RoomDetailView(DetailView):
-
     model = Room
     queryset = Room.objects.all()
     template_name = 'room_detail.html'
@@ -140,10 +140,21 @@ class RoomDetailView(DetailView):
 
 
 class JournalDetailView(DetailView):
-
     model = Journal
     queryset = Journal.objects.all()
     template_name = 'journal_detail.html'
 
     def get_journal(self):
         return self.queryset.filter(journal_id=self.kwargs.get('journal_id'))
+
+
+@login_required
+@permission_required('mycore.change_journal')
+def check_out(request, journal_id):
+    journal = Journal.objects.get(id=journal_id)
+    journal.key_out_date = timezone.now()
+    journal.save_base()
+    room = Room.objects.get(id=journal.room_id.id)
+    room.is_free = True
+    room.save_base()
+    return render(request, 'check_out_form.html', {'key_out_date': journal.key_out_date})
