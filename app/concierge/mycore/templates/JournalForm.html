@@ -3,12 +3,7 @@
     <p><h3>Add New Journal</h3>
         <form method="post">
             {% csrf_token %}
-            <label>Enter Tenant name</label>
-            <input type="text" name="tenant_id">
-            <label>Enter Room Number</label>
-            <input type="text" name="room_id">
-            <label>Enter Guests Count</label>
-            <input type="text" name="guests_count">
+            {{ form.as_table }}
             <input type="submit"/>
             <input type="reset"/>
         </form>
