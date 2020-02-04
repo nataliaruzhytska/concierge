@@ -1,0 +1,10 @@
+{% extends "index.html" %}
+{% block content %}
+    <p><h3>Room Number: {{ journal.room_id.number }}</h3></p>
+    <p><h3>Guests Count: {{ journal.guests_cnt }}</h3></p>
+    <p><h3>Check-In Date: {{ journal.key_in_date }}</h3></p>
+    <p><h3>Check-Out Date: {{ journal.key_out_date }}</h3></p>
+    <p><h3>Tenant: {{ journal.tenant_id.fullname }}</h3></p>
+    <p><h3>Notes: {{ journal.notes }}</h3></p>
+    <p><a href="check_out_form" ><h3>Check-Out</h3></a></p>
+{% endblock %}

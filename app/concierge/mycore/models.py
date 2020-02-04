@@ -69,6 +69,8 @@ class Room(models.Model):
         default=True
     )
 
+    class Meta:
+        ordering = ['number']
 
 class Journal(models.Model):
     """
@@ -100,6 +102,9 @@ class Journal(models.Model):
         blank=True,
         null=True,
     )
+
+    class Meta:
+        ordering = ['id']
 
     @property
     def key_transfer(self):

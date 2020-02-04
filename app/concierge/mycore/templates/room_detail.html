@@ -1,0 +1,7 @@
+{% extends "index.html" %}
+{% block content %}
+    <p><h3>Room Number: {{ room.number }}</h3></p>
+    <p><h3>Maximum Guests: {{ room.max_guests }}</h3></p>
+    <p><h3>Owner(Tenant): {{ room.owner }}</h3></p>
+    <p><h3>Room Available: {{ room.is_free }}</h3></p>
+{% endblock %}

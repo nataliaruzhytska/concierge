@@ -1,7 +1,4 @@
-# Register your models here.
-from django.conf import settings
 from django.contrib import admin
-
 from .models import Tenant, Room, Journal
 
 
@@ -17,8 +14,6 @@ class RoomAdmin(admin.ModelAdmin):
     list_display = ('number', 'max_guests', 'owner', 'is_free')
     search_fields = ('number', 'max_guests', 'owner', 'is_free')
     list_filter = ('number', 'owner', 'is_free')
-
-
 
 
 @admin.register(Journal)

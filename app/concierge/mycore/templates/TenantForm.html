@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% block content %}
+    <p><h3>Add New Tenant</h3>
+            <form  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_table }}
+                <input type="submit"/>
+                <input type="reset"/>
+            </form>
+    </p>
+{% endblock %}
