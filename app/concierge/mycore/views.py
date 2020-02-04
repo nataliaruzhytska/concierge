@@ -156,5 +156,6 @@ def check_out(request, journal_id):
     journal.save_base()
     room = Room.objects.get(id=journal.room_id.id)
     room.is_free = True
+    room.owner = None
     room.save_base()
     return render(request, 'check_out_form.html', {'key_out_date': journal.key_out_date})

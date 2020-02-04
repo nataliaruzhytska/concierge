@@ -29,6 +29,7 @@ class RoomForm(forms.Form):
 class JournalForm(forms.Form):
     room_id = forms.IntegerField()
     tenant_id = forms.IntegerField()
+    guests_count = forms.IntegerField()
 
     def save_journal(self):
         room = Room.objects.get(id=int(self.data['room_id']))
