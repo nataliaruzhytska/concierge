@@ -9,14 +9,12 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import FormView, DetailView, ListView
 from .forms import JournalForm, RoomForm, TenantForm
 from .models import Tenant, Room, Journal
-from .settings import CACHE_TTL
 
 
 def health_check(request):
     return HttpResponse('OK')
 
 
-@cache_page(CACHE_TTL)
 def index(request):
     return HttpResponse(render_to_string('index.html', {'title': 'Concierge'}))
 
