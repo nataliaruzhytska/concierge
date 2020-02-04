@@ -9,12 +9,14 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import FormView, DetailView, ListView
 from .forms import JournalForm, RoomForm, TenantForm
 from .models import Tenant, Room, Journal
+from .settings import CACHE_TTL
 
 
 def health_check(request):
     return HttpResponse('OK')
 
 
+@cache_page(CACHE_TTL)
 def index(request):
     return HttpResponse(render_to_string('index.html', {'title': 'Concierge'}))
 
@@ -93,7 +95,7 @@ class TenantListView(ListView):
     model = Tenant
     queryset = Tenant.objects.all()
     template_name = 'tenants_list.html'
-    paginate_by = 10
+    paginate_by = 20
 
     def get_all_tenants(self):
         return self.queryset
@@ -103,7 +105,7 @@ class RoomListView(ListView):
     model = Room
     queryset = Room.objects.all()
     template_name = 'rooms_list.html'
-    paginate_by = 10
+    paginate_by = 20
 
     def get_all_rooms(self):
         return self.queryset
@@ -113,7 +115,7 @@ class JournalListView(ListView):
     model = Journal
     queryset = Journal.objects.all()
     template_name = 'journals_list.html'
-    paginate_by = 10
+    paginate_by = 30
 
     def get_all_journals(self):
         return self.queryset

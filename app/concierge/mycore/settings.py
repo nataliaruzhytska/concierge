@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'mycore.middlewares.SimpleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,6 +52,19 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "concierge"
+    }
+}
+
+CACHE_TTL = 60 * 5
 
 ROOT_URLCONF = 'mycore.urls'
 
@@ -98,6 +112,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -112,6 +127,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# AUTHENTICATION_BACKENDS = [
+#     # 'django.contrib.auth.backends.ModelBackend',
+#     'mycore.backends.MyBackend',
+# ]
 
 
 # Internationalization
@@ -173,3 +193,6 @@ LOGGING = {
 FIXTURES = ['room_initial_data.json', 'tenant_initial_data.json', 'journal_initial_data.json']
 
 API_URL = 'http://127.0.0.1:8000/api/'
+
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'

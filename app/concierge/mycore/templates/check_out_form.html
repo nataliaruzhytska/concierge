@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block content %}
+    <p><h3>Check-Out</h3>
+        <form method="post">
+            {% csrf_token %}
+            <label>Confirm Check-Out Date</label>
+            <h3> {{key_out_date}}</h3>
+            <input type="submit"/>
+        </form>
+    </p>
+{% endblock %}
+

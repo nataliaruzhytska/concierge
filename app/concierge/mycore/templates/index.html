@@ -33,11 +33,12 @@
         <a class="nav-link" href="{% url 'room_list' %}">Rooms</a>
       </li>
     </ul>
+       <a class="nav-link" href="accounts/login">LogIn</a>
+        <a class="nav-link" href="accounts/logout">LogOut</a>
       </div>
       </nav>
     <!-- Links -->
     {% block content %}
-
       <div align="center">
           <h1 >{{ title }}</h1>
           <p><a href="{% url 'add_journal' %}"><h2>Add Journal</h2></a></p>
