@@ -92,7 +92,6 @@ class JournalView(FormView):
 
 
 class TenantListView(ListView):
-
     model = Tenant
     queryset = Tenant.objects.all()
     template_name = 'tenants_list.html'
@@ -103,7 +102,6 @@ class TenantListView(ListView):
 
 
 class RoomListView(ListView):
-
     model = Room
     queryset = Room.objects.all()
     template_name = 'rooms_list.html'
@@ -114,7 +112,6 @@ class RoomListView(ListView):
 
 
 class JournalListView(ListView):
-
     model = Journal
     queryset = Journal.objects.all()
     template_name = 'journals_list.html'
@@ -125,7 +122,6 @@ class JournalListView(ListView):
 
 
 class TenantDetailView(DetailView):
-
     model = Tenant()
     queryset = Tenant.objects.all()
     template_name = 'tenant_detail.html'
@@ -135,7 +131,6 @@ class TenantDetailView(DetailView):
 
 
 class RoomDetailView(DetailView):
-
     model = Room
     queryset = Room.objects.all()
     template_name = 'room_detail.html'
@@ -145,7 +140,6 @@ class RoomDetailView(DetailView):
 
 
 class JournalDetailView(DetailView):
-
     model = Journal
     queryset = Journal.objects.all()
     template_name = 'journal_detail.html'
@@ -160,4 +154,7 @@ def check_out(request, journal_id):
     journal = Journal.objects.get(id=journal_id)
     journal.key_out_date = timezone.now()
     journal.save_base()
+    room = Room.objects.get(id=journal.room_id.id)
+    room.is_free = True
+    room.save_base()
     return render(request, 'check_out_form.html', {'key_out_date': journal.key_out_date})
