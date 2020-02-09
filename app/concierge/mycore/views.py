@@ -95,7 +95,7 @@ class TenantListView(ListView):
     model = Tenant
     queryset = Tenant.objects.all()
     template_name = 'tenants_list.html'
-    paginate_by = 20
+    paginate_by = 10
 
     def get_all_tenants(self):
         return self.queryset
@@ -105,7 +105,7 @@ class RoomListView(ListView):
     model = Room
     queryset = Room.objects.all()
     template_name = 'rooms_list.html'
-    paginate_by = 20
+    paginate_by = 10
 
     def get_all_rooms(self):
         return self.queryset
@@ -115,7 +115,7 @@ class JournalListView(ListView):
     model = Journal
     queryset = Journal.objects.all()
     template_name = 'journals_list.html'
-    paginate_by = 30
+    paginate_by = 10
 
     def get_all_journals(self):
         return self.queryset
@@ -156,5 +156,6 @@ def check_out(request, journal_id):
     journal.save_base()
     room = Room.objects.get(id=journal.room_id.id)
     room.is_free = True
+    room.owner = None
     room.save_base()
     return render(request, 'check_out_form.html', {'key_out_date': journal.key_out_date})
